@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title><!-- TODO -->Change this you moron</title>
+    <title>DICOMIOPSY QCM</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script type="text/javascript" src="main.js"></script>
@@ -21,11 +21,16 @@
 </head>
 <body>
     <main id="app" style="display:none">
-        <h1>{{title}}</h1>
+        <h1>DICOMIOPSY QCM</h1>
+        <div>
+            <div id='status'>Score : {{ score }}</div>
+            <h2 id="question">{{ data[question].name }}</div>
+            <template v-for="(answer, i) in answers">
+                <div class="answer" :class="{right: show_results && answer.id === this.question, wrong: show_results && answer.clicked && answer.id !== this.question}" @click="click(i)">{{ data[answer.id].description }}</div>
+            </template>
+        </div>
         <br>
-        <p v-html="content"></p>
-        <br>
-        <small><a href="https://twitter.com/_klemek" target="_blank">@Klemek</a> - <a href="" target="_blank">Github Repository</a> - {{currentYear}}</small>
+        <small><a href="https://twitter.com/_klemek" target="_blank">@Klemek</a> - <a href="https://github.com/Klemek/dicosemiopsy-qcm" target="_blank">Github Repository</a> - 2023</small>
     </main>
 </body>
 </html>

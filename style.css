@@ -157,3 +157,74 @@ ol {
     font-size: inherit;
   }
 }
+
+@media only screen and (min-width: 768px) {
+  main {
+    max-width: 42rem;
+  }
+}
+
+.main {
+  text-align: center;
+  font-size: 2em;
+}
+
+.main > span {
+  line-height: 1.5em;
+}
+
+#question {
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+
+.answer {
+  border: 2px solid var(--text-primary);
+  border-radius: .5em;
+  width: 100%;
+  padding: 1em;
+  margin-bottom: 1em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.answer:hover {
+  background-color: rgba(0%, 0%, 0%, 10%);
+}
+
+.answer:active {
+  background-color: rgba(0%, 0%, 0%, 20%);
+}
+
+.answer.disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.answer.right {
+  background-color: #8BC34A;
+  color: #eeeeee;
+  border: 2px solid #558B2F;
+}
+
+.answer.right:hover {
+  background-color: #7cb342;
+}
+
+.answer.right:active {
+  background-color: #558B2F;
+}
+
+.answer.wrong {
+  background-color: #F44336;
+  color: #eeeeee;
+  border: 2px solid #C62828;
+}
+
+.answer.wrong:hover {
+  background-color: #E53935;
+}
+
+.answer.wrong:active {
+  background-color: #c62828;
+}

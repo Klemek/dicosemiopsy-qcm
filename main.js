@@ -1,90 +1,35 @@
-/* exported app, utils */
+function shuffle(array) {
+    let currentIndex = array.length, randomIndex;
 
-const utils = {
-    ajax: {
-        proxy: 'cors-anywhere.herokuapp.com',
-        /**
-         * Define a get HTTP request to be executed with .then/.catch
-         * @param {string} url
-         * @param {Object} data
-         * @param {boolean} proxy - use cors proxy
-         * @returns {Promise<Object|string>} return JSON parsed data or string
-         */
-        get: (url, data, proxy = false) => {
-            return new Promise((resolve, reject) => {
-                if (data && Object.keys(data).length) {
-                    url += '?' + Object.keys(data)
-                        .map(k => k + '=' + encodeURIComponent(data[k]))
-                        .join('&')
-                        .replace(/%20/g, '+');
-                }
-                const xhr = new XMLHttpRequest();
-                if (proxy) {
-                    const http = (window.location.protocol === 'http:' ? 'http:' : 'https:');
-                    url = `${http}//${utils.ajax.proxy}/${url}`;
-                }
-                xhr.open('GET', url);
-                xhr.onload = () => {
-                    try {
-                        resolve(JSON.parse(xhr.responseText));
-                    } catch (ignored) {
-                        resolve(xhr.responseText);
-                    }
-                };
-                xhr.onerror = () => reject(xhr);
-                xhr.send();
-            });
-        },
-    },
-    cookies: {
-    /**
-     * Save a value in a cookie
-     * @param {string} name
-     * @param {string} value
-     * @param {number | undefined} days
-     */
-        set: function (name, value, days = undefined) {
-            const maxAge = !days ? undefined : days * 864e2;
-            document.cookie = `${name}=${encodeURIComponent(value)}${maxAge ? `;max-age=${maxAge};` : ''}`;
-        },
-        /**
-         * Get a value from a cookie
-         * @param {string} name
-         * @return {string} value from cookie or empty if not found
-         */
-        get: function (name) {
-            return document.cookie.split('; ').reduce(function (r, v) {
-                const parts = v.split('=');
-                return parts[0] === name ? decodeURIComponent(parts[1]) : r;
-            }, '');
-        },
-        /**
-         * Delete a cookie
-         * @param {string} name
-         */
-        delete: function (name) {
-            this.set(name, '', -1);
-        },
-        /**
-         * Clear all cookies
-         */
-        clear: function () {
-            const cookies = document.cookie.split(';');
-            for (let i = 0; i < cookies.length; i++) {
-                const cookie = cookies[i];
-                const eqPos = cookie.indexOf('=');
-                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-                document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT`;
-            }
-        },
-    },
-};
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+
+        // Pick a remaining element.
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        // And swap it with the current element.
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+    }
+
+    return array;
+}
+
 
 let app = {
     data() {
         return {
-            title: 'Vue-Boilerplate',
-            content: 'Fill this page with <i>whatever</i> you\'re going to develop.<br><b>Then enjoy!</b>',
+            data: [{ name: 'loading', description: 'loading' }],
+            score: 0,
+            question: 0,
+            answers: [
+                { id: 0, clicked: false },
+                { id: 0, clicked: false },
+                { id: 0, clicked: false },
+                { id: 0, clicked: false },
+            ],
+            show_results: false,
         };
     },
     computed: {
@@ -93,13 +38,51 @@ let app = {
         },
     },
     methods: {
-        showApp() {
+        showApp(data) {
+            this.data = data;
             document.getElementById('app').setAttribute('style', '');
+            this.newQuestion();
+        },
+        click(i) {
+            if (!this.show_results) {
+                this.answers[i].clicked = true;
+                if (this.answers[i].id == this.question) {
+                    this.score += 1;
+                } else {
+                    this.score = 0;
+                }
+            } else {
+                this.newQuestion();
+            }
+
+            this.show_results = !this.show_results;
+        },
+        getRandomDataIndex() {
+            return Math.floor(Math.random() * this.data.length)
+        },
+        newQuestion() {
+            this.question = this.getRandomDataIndex();
+            const ids = [this.question];
+            for (let i = 0; i < 3; i++) {
+                let candidate = this.getRandomDataIndex();
+                while (ids.includes(candidate)) {
+                    candidate = this.getRandomDataIndex();
+                }
+                ids.push(candidate);
+            }
+            this.answers = shuffle(ids.map(id => {
+                return {
+                    id: id, clicked: false
+                };
+            }));
         },
     },
     mounted: function () {
         console.log('app mounted');
-        setTimeout(this.showApp);
+
+        fetch("data.json")
+            .then(response => response.json())
+            .then(this.showApp);
     },
 };
 
