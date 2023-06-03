@@ -188,10 +188,6 @@ ol {
   user-select: none;
 }
 
-.answer:hover {
-  background-color: rgba(0%, 0%, 0%, 10%);
-}
-
 .answer:active {
   background-color: rgba(0%, 0%, 0%, 20%);
 }
@@ -207,10 +203,6 @@ ol {
   border: 2px solid #558B2F;
 }
 
-.answer.right:hover {
-  background-color: #7cb342;
-}
-
 .answer.right:active {
   background-color: #558B2F;
 }
@@ -221,10 +213,20 @@ ol {
   border: 2px solid #C62828;
 }
 
-.answer.wrong:hover {
-  background-color: #E53935;
-}
-
 .answer.wrong:active {
   background-color: #c62828;
+}
+
+@media (hover: hover) {
+  .answer.wrong:hover {
+    background-color: #E53935;
+  }
+
+  .answer.right:hover {
+    background-color: #7cb342;
+  }
+
+  .answer:hover {
+    background-color: rgba(0%, 0%, 0%, 10%);
+  }
 }
