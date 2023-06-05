@@ -207,6 +207,10 @@ ol {
   background-color: #558B2F;
 }
 
+.good {
+  color: #558B2F;
+}
+
 .answer.wrong {
   background-color: #F44336;
   color: #eeeeee;
@@ -215,6 +219,10 @@ ol {
 
 .answer.wrong:active {
   background-color: #c62828;
+}
+
+.bad {
+  color: #C62828;
 }
 
 @media (hover: hover) {

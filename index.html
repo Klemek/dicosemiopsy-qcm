@@ -23,7 +23,7 @@
     <main id="app" style="display:none">
         <h1>DICOMIOPSY QCM</h1>
         <div>
-            <div id='status'>Score : {{ score }}</div>
+            <div id='status'>Score : <span class="good">{{ good }} ✔</span> | <span class="bad">{{ bad }} ✘</span></div>
             <h2 id="question">{{ data[question].name }}</div>
             <template v-for="(answer, i) in answers">
                 <div class="answer" :class="{right: show_results && answer.id === this.question, wrong: show_results && answer.clicked && answer.id !== this.question}" @click="click(i)">{{ data[answer.id].description }}</div>

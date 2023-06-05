@@ -21,7 +21,8 @@ let app = {
     data() {
         return {
             data: [{ name: 'loading', description: 'loading' }],
-            score: 0,
+            good: 0,
+            bad: 0,
             question: 0,
             answers: [
                 { id: 0, clicked: false },
@@ -47,9 +48,9 @@ let app = {
             if (!this.show_results) {
                 this.answers[i].clicked = true;
                 if (this.answers[i].id == this.question) {
-                    this.score += 1;
+                    this.good += 1;
                 } else {
-                    this.score = 0;
+                    this.bad += 1;
                 }
             } else {
                 this.newQuestion();
